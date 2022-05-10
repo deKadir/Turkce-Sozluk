@@ -8,7 +8,7 @@ import SvgStar from './icons/Star';
 import theme from '../utils/theme';
 function TabBar({ state, descriptors, navigation }) {
   return (
-    <View style={{ flexDirection: 'row' }}>
+    <Container style={{ flexDirection: 'row' }}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =
@@ -41,17 +41,26 @@ function TabBar({ state, descriptors, navigation }) {
           </SearchButtonContainer>
         ) : (
           <TabButton onPress={onPress}>
-            {label == 'History' && <SvgClock />}
-            {label == 'Favorite' && <SvgStar />}
+            {label == 'History' && (
+              <SvgClock stroke={isFocused ? 'red' : 'gray'} />
+            )}
+            {label == 'Favorite' && (
+              <SvgStar stroke={isFocused ? 'red' : 'gray'} />
+            )}
 
             <Box isFocused={isFocused}></Box>
           </TabButton>
         );
       })}
-    </View>
+    </Container>
   );
 }
-
+const Container = styled(View)`
+  flex-direction: row;
+  shadowcolor: '#000';
+  shadowopacity: 0.8;
+  elevation: 2;
+`;
 const SearchButton = styled(TouchableOpacity)`
   justify-content: center;
   align-items: center;

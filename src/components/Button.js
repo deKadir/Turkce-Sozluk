@@ -5,8 +5,8 @@ const Button = styled(TouchableOpacity)`
   display: flex;
   flex-direction: row;
   align-items: center;
-  flex: 1;
   justify-content: center;
+  flex: 1;
   height: 56px;
 `;
 
