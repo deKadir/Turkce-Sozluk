@@ -3,13 +3,14 @@ import SvgLogo from './../components/icons/Logo';
 import Search from '../components/Search';
 import styled from 'styled-components/native';
 import bg from '../../assets/bg.jpg';
-import { Platform } from 'react-native';
+import { Platform, Animated, ImageBackground } from 'react-native';
 export default function SearchView({ navigation }) {
   const [focus, setFocus] = React.useState(false);
+
   return (
     <SafeArea>
-      <Container source={bg} focus={focus}>
-        <LogoContainer>
+      <Container source={bg} height={focus ? 0 : 285}>
+        <LogoContainer focus={focus}>
           <SvgLogo width="120" height="120" color="white" />
         </LogoContainer>
         <SearchContainer>
@@ -28,10 +29,11 @@ const LogoContainer = styled.View`
   justify-content: center;
   flex: 1;
   align-items: center;
+  opacity: ${(props) => (props.focus ? 0 : 1)};
 `;
-const Container = styled.ImageBackground`
+const Container = styled(ImageBackground)`
   padding: 10px;
-  height: ${(props) => (props.focus ? '0px' : '285px')};
+  height: ${(props) => props.height}px;
   padding-bottom: 0;
 `;
 const SearchContainer = styled.View`

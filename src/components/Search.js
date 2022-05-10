@@ -11,20 +11,9 @@ function Search({ onChangeFocus }) {
     setFocus(true);
   };
   React.useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', keyboardShow);
-    Keyboard.addListener('keyboardDidHide', keyboardHide);
-    return () => {
-      Keyboard.removeListener('keyboardDidShow', keyboardShow);
-      Keyboard.removeListener('keyboardDidHide', keyboardHide);
-    };
-  }, []);
+    onChangeFocus(focus);
+  }, [focus, onChangeFocus]);
 
-  const keyboardShow = () => {
-    onChangeFocus(true);
-  };
-  const keyboardHide = () => {
-    onChangeFocus(false);
-  };
   const onCancel = () => {
     Keyboard.dismiss();
     setFocus(false);
