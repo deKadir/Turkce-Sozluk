@@ -3,7 +3,9 @@ import SvgLogo from './../components/icons/Logo';
 import Search from '../components/Search';
 import styled from 'styled-components/native';
 import bg from '../../assets/bg.jpg';
-import { Platform, Animated, ImageBackground } from 'react-native';
+import { Platform, ImageBackground } from 'react-native';
+import { Card, CardBody, CardSummary, CardTitle } from '../components/Card';
+import theme from '../utils/theme';
 export default function SearchView({ navigation }) {
   const [focus, setFocus] = React.useState(false);
 
@@ -17,7 +19,21 @@ export default function SearchView({ navigation }) {
           <Search onChangeFocus={(status) => setFocus(status)} />
         </SearchContainer>
       </Container>
-      <Content />
+      <Content>
+        <Card onPress={() => navigation.navigate('Details')}>
+          <CardBody>
+            <CardTitle>on para</CardTitle>
+            <CardSummary>çok az (para)</CardSummary>
+          </CardBody>
+        </Card>
+        <CardLabel>Bir Deyim - Atasözü</CardLabel>
+        <Card onPress={() => navigation.navigate('Details')}>
+          <CardBody>
+            <CardTitle>on para</CardTitle>
+            <CardSummary>çok az (para)</CardSummary>
+          </CardBody>
+        </Card>
+      </Content>
     </SafeArea>
   );
 }
@@ -32,7 +48,7 @@ const LogoContainer = styled.View`
   opacity: ${(props) => (props.focus ? 0 : 1)};
 `;
 const Container = styled(ImageBackground)`
-  padding: 10px;
+  padding: 16px;
   height: ${(props) => props.height}px;
   padding-bottom: 0;
 `;
@@ -41,8 +57,14 @@ const SearchContainer = styled.View`
 `;
 
 const Content = styled.View`
-  background: white;
+  background: ${theme.colors.softRed};
   flex: 1;
   position: relative;
   z-index: -1;
+  padding: 16px;
+  padding-top: 40px;
+`;
+
+const CardLabel = styled.Text`
+  color: ${theme.colors.textLight};
 `;
