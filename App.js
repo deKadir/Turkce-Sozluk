@@ -8,6 +8,9 @@ import DetailView from './src/views/Detail';
 import { Platform } from 'react-native';
 import TabBar from './src/components/TabBar';
 import styled from 'styled-components/native';
+import theme from './src/utils/theme';
+import SvgLeft from './src/components/icons/Left';
+import Button from './src/components/Button';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -38,7 +41,18 @@ function SearchStack() {
         component={SearchView}
         options={{ headerShown: false }}
       />
-      <HomeStack.Screen name="Details" component={DetailView} />
+      <HomeStack.Screen
+        name="Details"
+        component={DetailView}
+        options={({ route, navigation }) => {
+          return {
+            title: route?.params.title,
+            headerStyle: {
+              backgroundColor: theme.colors.softRed,
+            },
+          };
+        }}
+      />
     </HomeStack.Navigator>
   );
 }

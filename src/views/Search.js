@@ -4,11 +4,23 @@ import Search from '../components/Search';
 import styled from 'styled-components/native';
 import bg from '../../assets/bg.jpg';
 import { Platform, ImageBackground } from 'react-native';
-import { Card, CardBody, CardSummary, CardTitle } from '../components/Card';
 import theme from '../utils/theme';
+import { SimpleCard, SimpleCardTitle } from '../components/SimpleCard';
+import { FlatList } from 'react-native';
+import SuggestionCard from '../components/SuggestionCard';
+import { CardLabel } from '../components/Card';
+
 export default function SearchView({ navigation }) {
   const [focus, setFocus] = React.useState(false);
-
+  const [homeData, setHomeData] = React.useState(null);
+  const getHomeData = async () => {
+    const response = await fetch('https://sozluk.gov.tr/icerik');
+    const data = await response.json();
+    setHomeData(data);
+  };
+  React.useEffect(() => {
+    getHomeData();
+  }, []);
   return (
     <SafeArea>
       <Container source={bg} height={focus ? 0 : 285}>
@@ -19,21 +31,56 @@ export default function SearchView({ navigation }) {
           <Search onChangeFocus={(status) => setFocus(status)} />
         </SearchContainer>
       </Container>
-      <Content>
-        <Card onPress={() => navigation.navigate('Details')}>
-          <CardBody>
-            <CardTitle>on para</CardTitle>
-            <CardSummary>çok az (para)</CardSummary>
-          </CardBody>
-        </Card>
-        <CardLabel>Bir Deyim - Atasözü</CardLabel>
-        <Card onPress={() => navigation.navigate('Details')}>
-          <CardBody>
-            <CardTitle>on para</CardTitle>
-            <CardSummary>çok az (para)</CardSummary>
-          </CardBody>
-        </Card>
-      </Content>
+      {!focus && (
+        <Content>
+          <SuggestionCard
+            title="Bir Kelime"
+            data={homeData?.kelime[0]}
+            onPress={() =>
+              navigation.navigate('Details', {
+                title: homeData?.kelime[0]?.madde,
+              })
+            }
+          />
+          <SuggestionCard
+            title="Bir Deyim - Atasözü"
+            data={homeData?.atasoz[0]}
+            onPress={() =>
+              navigation.navigate('Details', {
+                title: homeData?.atasoz[0]?.madde,
+              })
+            }
+          />
+        </Content>
+      )}
+      {focus && (
+        <Content focus={true}>
+          <CardLabel>Son Aramalar</CardLabel>
+          <HistoryContainer>
+            <FlatList
+              data={[
+                {
+                  title: 'kalem',
+                },
+                {
+                  title: 'kagıt',
+                },
+                {
+                  title: 'silgi',
+                },
+              ]}
+              renderItem={({ item }) => {
+                return (
+                  <SimpleCard>
+                    <SimpleCardTitle>{item.title}</SimpleCardTitle>
+                  </SimpleCard>
+                );
+              }}
+              keyExtractor={(item) => item.title}
+            />
+          </HistoryContainer>
+        </Content>
+      )}
     </SafeArea>
   );
 }
@@ -62,9 +109,9 @@ const Content = styled.View`
   position: relative;
   z-index: -1;
   padding: 16px;
-  padding-top: 40px;
+  padding-top: ${(props) => (props.focus ? '60px' : '45px')};
 `;
 
-const CardLabel = styled.Text`
-  color: ${theme.colors.textLight};
+const HistoryContainer = styled.View`
+  flex: 1;
 `;

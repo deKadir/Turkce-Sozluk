@@ -1,12 +1,15 @@
 import styled from 'styled-components/native';
 import theme from '../utils/theme';
 import Button from './Button';
+export const CardLabel = styled.Text`
+  color: ${theme.colors.textLight};
+`;
 export const CardTitle = styled.Text`
   font-size: 18px;
   font-weight: bold;
 `;
 export const CardSummary = styled.Text`
-  font-size: 18px;
+  font-size: 14px;
   color: ${theme.colors.textMedium};
   margin-top: 6px;
 `;
